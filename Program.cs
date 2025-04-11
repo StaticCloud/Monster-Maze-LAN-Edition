@@ -1,6 +1,4 @@
-﻿using System.Net;
-using System.Net.Sockets;
-using Spectre.Console;
+﻿using Spectre.Console;
 
 namespace MonsterMaze
 {
@@ -18,11 +16,11 @@ namespace MonsterMaze
 
             if (choice == "Server")
             {
-                Server.Start();
+                _ = new Server().Start();
             }
             else 
             {
-                Client.Start();
+                _ = new Client().Start();
             }
         }
     }

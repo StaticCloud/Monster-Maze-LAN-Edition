@@ -13,7 +13,7 @@ namespace MonsterMaze
 
         }
 
-        public static async Task Start()
+        public async Task Start()
         {
             IPEndPoint iPEndPoint = new(IPAddress.Loopback, 3001);
 
@@ -27,29 +27,29 @@ namespace MonsterMaze
 
                 NetworkStream stream = client.GetStream();
 
+                Player clientPlayer = new Player();
+
                 _ = Task.Run(() => Listen(stream));
 
                 while (true)
                 {
-                    string message = Console.ReadLine();
-                    var messageByte = Encoding.UTF8.GetBytes(message);
-
-                    await stream.WriteAsync(messageByte);
+                    await clientPlayer.HandleMovements(stream);
                 }
-            } finally
+            } 
+            finally
             {
-                client.Dispose();
+                client.Close();
             }
         }
 
-        private async static Task Listen(NetworkStream stream)
+        private async Task Listen(NetworkStream stream)
         {
             while (true)
             {
-                var buffer = new byte[4096];
+                byte[] buffer = new byte[4096];
                 int recieved = await stream.ReadAsync(buffer, 0, buffer.Length);
 
-                var message = Encoding.UTF8.GetString(buffer, 0, recieved);
+                string message = Encoding.UTF8.GetString(buffer, 0, recieved);
                 Console.WriteLine($"Server: {message}");
             }
         }
