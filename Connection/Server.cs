@@ -2,15 +2,18 @@
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
-using System.Threading.Tasks;
+using MonsterMaze.GameLogic;
 
-namespace MonsterMaze
+namespace MonsterMaze.Connection
 {
     internal class Server
     {
+
+        private Game _game;
+
         public Server() 
         {
-            
+        
         }
 
         public async Task Start()
@@ -33,11 +36,13 @@ namespace MonsterMaze
 
                 Player serverPlayer = new Player();
 
+                _game = new Game(stream, serverPlayer);
+                
                 _ = Task.Run(() => Listen(stream));
 
                 while (true)
                 {
-                    await serverPlayer.HandleMovements(stream);
+                    await _game.Run();
                 }
             }
             finally
@@ -53,8 +58,8 @@ namespace MonsterMaze
                 byte[] buffer = new byte[4096];
                 int recieved = await stream.ReadAsync(buffer, 0, buffer.Length);
 
-                string message = Encoding.UTF8.GetString(buffer, 0, recieved);
-                Console.WriteLine($"Client: {message}");
+                string payload = Encoding.UTF8.GetString(buffer, 0, recieved);
+                _game.Update(PlayerType.Client, payload);
             }
         }
     }

@@ -1,4 +1,5 @@
 ﻿using Spectre.Console;
+using MonsterMaze.Connection;
 
 namespace MonsterMaze
 {

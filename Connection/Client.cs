@@ -1,13 +1,14 @@
-﻿using System;
-using System.Net.Sockets;
+﻿using System.Net.Sockets;
 using System.Net;
 using System.Text;
-using System.Threading.Tasks;
+using MonsterMaze.GameLogic;
 
-namespace MonsterMaze
+namespace MonsterMaze.Connection
 {
     internal class Client
     {
+        private Game _game;
+
         public Client()
         {
 
@@ -29,11 +30,13 @@ namespace MonsterMaze
 
                 Player clientPlayer = new Player();
 
+                _game = new Game(stream, clientPlayer);
+
                 _ = Task.Run(() => Listen(stream));
 
-                while (true)
+                while (true) 
                 {
-                    await clientPlayer.HandleMovements(stream);
+                    await _game.Run();
                 }
             } 
             finally
@@ -49,8 +52,8 @@ namespace MonsterMaze
                 byte[] buffer = new byte[4096];
                 int recieved = await stream.ReadAsync(buffer, 0, buffer.Length);
 
-                string message = Encoding.UTF8.GetString(buffer, 0, recieved);
-                Console.WriteLine($"Server: {message}");
+                string payload = Encoding.UTF8.GetString(buffer, 0, recieved);
+                _game.Update(PlayerType.Server, payload);
             }
         }
     }
