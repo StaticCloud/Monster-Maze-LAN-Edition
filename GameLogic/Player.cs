@@ -1,4 +1,5 @@
-﻿using System.Net.Sockets;
+﻿using System.ComponentModel;
+using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -9,11 +10,17 @@ namespace MonsterMaze.GameLogic
         [DllImport("user32.dll")]
         private static extern short GetAsyncKeyState(int vkey);
 
+        private Direction[] _directions;
+
+        private int _direction;
+
         private Coords Coords { get; set; }
 
         public Player()
         {
             Coords = new Coords(0, 0);
+            _directions = [Direction.N, Direction.E, Direction.S, Direction.W];
+            _direction = 0;
         }
 
         private static bool KeyDown(ConsoleKey key)
@@ -27,22 +34,41 @@ namespace MonsterMaze.GameLogic
 
             if (KeyDown(ConsoleKey.UpArrow))
             {
-                Coords = new Coords(Coords.X, Coords.Y - 1);
-                keydown = true;
-            }
-            else if (KeyDown(ConsoleKey.DownArrow))
-            {
-                Coords = new Coords(Coords.X, Coords.Y + 1);
-                keydown = true;
+                try
+                {
+                    if (GetDirection().Equals(Direction.N))
+                    {
+                        Coords = new Coords(Coords.X, Coords.Y - 1);
+                    }
+                    else if (GetDirection().Equals(Direction.E))
+                    {
+                        Coords = new Coords(Coords.X - 1, Coords.Y);
+                    }
+                    else if (GetDirection().Equals(Direction.S))
+                    {
+                        Coords = new Coords(Coords.X, Coords.Y + 1);
+                    }
+                    else if (GetDirection().Equals(Direction.W))
+                    {
+                        Coords = new Coords(Coords.X + 1, Coords.Y);
+                    }
+
+                    keydown = true;
+                } catch (IndexOutOfRangeException ex)
+                {
+                    Console.WriteLine(ex);
+                }
+               
             }
             else if (KeyDown(ConsoleKey.LeftArrow))
             {
-                Coords = new Coords(Coords.X - 1, Coords.Y);
+                _direction = (_direction + 1) % _directions.Length;
                 keydown = true;
             }
             else if (KeyDown(ConsoleKey.RightArrow))
             {
-                Coords = new Coords(Coords.X + 1, Coords.Y);
+                if (_direction < 0) _direction = 3;
+                else _direction = (_direction - 1) % _directions.Length;
                 keydown = true;
             }
 
@@ -57,8 +83,15 @@ namespace MonsterMaze.GameLogic
         private async Task TransmitMovements(NetworkStream stream)
         {
             byte[] messageByte = Encoding.UTF8.GetBytes(Coords.toJSON());
-
+            
             await stream.WriteAsync(messageByte);
         }
+
+        public enum Direction 
+        {
+            N, S, E, W
+        }
+
+        private Direction GetDirection() => _directions[_direction];
     }
 }
