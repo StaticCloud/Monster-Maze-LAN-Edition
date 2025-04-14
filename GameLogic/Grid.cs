@@ -13,17 +13,61 @@ namespace MonsterMaze.GameLogic
         private Canvas _canvas;
         private Coords _clientCoords;
         private Coords _serverCoords;
+        private string[] _map;
 
         public Grid() 
         {
-            _canvas = new Canvas(24, 24);
+            _canvas = new Canvas(23, 23);
+            _map = new[] {
+                "#######################",
+                "#_____________________#",
+                "#_##_##_###_###_##_##_#",
+                "#_#___#_#_____#_#___#_#",
+                "#___#_____#_#_____#___#",
+                "#_#___#_#_____#_#___#_#",
+                "#_##_##_###_###_##_##_#",
+                "#_____________________#",
+                "#_##_###_##_##_###_##_#",
+                "#_#___#_________#___#_#",
+                "#___#___#_###_#___#___#",
+                "#_#___#_________#___#_#",
+                "#_##_###_##_##_###_##_#",
+                "#_____________________#",
+                "#_##_##_###_###_##_##_#",
+                "#_#___#_#_____#_#___#_#",
+                "#___#_____#_#_____#___#",
+                "#_#___#_#_____#_#___#_#",
+                "#_##_##_###_###_##_##_#",
+                "#_____________________#",
+                "#######################",
+            };
 
-            for (int i = 0; i < 24; i++)
+            DrawMap();
+        }
+
+        public void DrawMap()
+        {
+            AnsiConsole.Clear();
+
+            for (int i = 0; i < _map.Length; i++)
             {
-                for (int j = 0; j < 24; j++) _canvas.SetPixel(i, j, Color.White);
+                for (int j = 0; j < _map[i].Length; j++) 
+                {
+                    char tile = _map[i][j];
+
+                    Color color = tile switch
+                    {
+                        '#' => Color.White,
+                        '_' => Color.Black
+                    };
+
+                    _canvas.SetPixel(j, i, color);
+                }
             }
 
-            AnsiConsole.Clear();
+            _canvas.SetPixel(_serverCoords.X, _serverCoords.Y, Color.Aqua);
+            _canvas.SetPixel(_clientCoords.X, _clientCoords.Y, Color.Red);
+
             AnsiConsole.Write(_canvas);
         }
 
@@ -34,16 +78,14 @@ namespace MonsterMaze.GameLogic
             if (player == PlayerType.Server)
             {
                 _serverCoords = coords;
-                _canvas.SetPixel(_serverCoords.X, _serverCoords.Y, Color.Red);
             }
-            else
+            
+            if (player == PlayerType.Client)
             {
                 _clientCoords = coords;
-                _canvas.SetPixel(_clientCoords.X, _clientCoords.Y, Color.Aqua);
             }
 
-            AnsiConsole.Clear();
-            AnsiConsole.Write(_canvas);
+            DrawMap();
         }
     }
 

@@ -1,5 +1,4 @@
-﻿using System.ComponentModel;
-using System.Net.Sockets;
+﻿using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text;
 
@@ -18,7 +17,7 @@ namespace MonsterMaze.GameLogic
 
         public Player()
         {
-            Coords = new Coords(0, 0);
+            Coords = new Coords(1, 1);
             _directions = [Direction.N, Direction.E, Direction.S, Direction.W];
             _direction = 0;
         }
