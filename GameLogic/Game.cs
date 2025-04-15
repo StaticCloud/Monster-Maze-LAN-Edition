@@ -18,8 +18,12 @@ namespace MonsterMaze.GameLogic
         public async Task Run()
         {
             await _player.HandleMovements(_stream);
+
+            if (_player.Type == PlayerType.Client) UpdateClient(_player.Coords.toJSON());
+            if (_player.Type == PlayerType.Server) UpdateServer(_player.Coords.toJSON());
         }
 
-        public void Update(PlayerType playerType, string payload) => Grid.Update(playerType, payload);
+        public void UpdateClient(string payload) => Grid.Update(PlayerType.Client, payload);
+        public void UpdateServer(string payload) => Grid.Update(PlayerType.Server, payload);
     }
 }

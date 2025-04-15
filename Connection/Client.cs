@@ -8,6 +8,7 @@ namespace MonsterMaze.Connection
     internal class Client
     {
         private Game _game;
+        private Player _player;
 
         public Client()
         {
@@ -16,7 +17,7 @@ namespace MonsterMaze.Connection
 
         public async Task Start()
         {
-            IPEndPoint iPEndPoint = new(IPAddress.Loopback, 3001);
+            IPEndPoint iPEndPoint = new(IPAddress.Parse("10.0.0.201"), 3001);
 
             TcpClient client = new();
 
@@ -28,9 +29,9 @@ namespace MonsterMaze.Connection
 
                 NetworkStream stream = client.GetStream();
 
-                Player clientPlayer = new Player();
+                _player = new Player(PlayerType.Client);
 
-                _game = new Game(stream, clientPlayer);
+                _game = new Game(stream, _player);
 
                 _ = Task.Run(() => Listen(stream));
 
@@ -53,7 +54,7 @@ namespace MonsterMaze.Connection
                 int recieved = await stream.ReadAsync(buffer, 0, buffer.Length);
 
                 string payload = Encoding.UTF8.GetString(buffer, 0, recieved);
-                _game.Update(PlayerType.Server, payload);
+                _game.UpdateServer(payload);
             }
         }
     }

@@ -10,6 +10,7 @@ namespace MonsterMaze.Connection
     {
 
         private Game _game;
+        private Player _player;
 
         public Server() 
         {
@@ -34,9 +35,9 @@ namespace MonsterMaze.Connection
 
                 NetworkStream stream = handler.GetStream();
 
-                Player serverPlayer = new Player();
+                _player = new Player(PlayerType.Server);
 
-                _game = new Game(stream, serverPlayer);
+                _game = new Game(stream, _player);
                 
                 _ = Task.Run(() => Listen(stream));
 
@@ -59,7 +60,7 @@ namespace MonsterMaze.Connection
                 int recieved = await stream.ReadAsync(buffer, 0, buffer.Length);
 
                 string payload = Encoding.UTF8.GetString(buffer, 0, recieved);
-                _game.Update(PlayerType.Client, payload);
+                _game.UpdateClient(payload);
             }
         }
     }

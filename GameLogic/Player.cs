@@ -13,11 +13,13 @@ namespace MonsterMaze.GameLogic
 
         private int _direction;
 
-        private Coords Coords { get; set; }
+        public Coords Coords { get; set; }
+        public PlayerType Type { get; set; }
 
-        public Player()
+        public Player(PlayerType type)
         {
             Coords = new Coords(1, 1);
+            Type = type;
             _directions = [Direction.N, Direction.E, Direction.S, Direction.W];
             _direction = 0;
         }
