@@ -17,7 +17,7 @@ namespace MonsterMaze.Connection
 
         public async Task Start()
         {
-            IPEndPoint iPEndPoint = new(IPAddress.Parse("10.0.0.201"), 3001);
+            IPEndPoint iPEndPoint = new(IPAddress.Loopback, 3001);
 
             TcpClient client = new();
 

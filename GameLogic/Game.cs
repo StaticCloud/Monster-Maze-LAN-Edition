@@ -17,10 +17,14 @@ namespace MonsterMaze.GameLogic
 
         public async Task Run()
         {
-            await _player.HandleMovements(_stream);
+            // Not proud of this at all, but it does fix the synchronization issue. Please educate yourself further on multithreading and asynchronosity, please.
+            Action gridFunc = _player.Type switch
+            {
+                PlayerType.Server => () => UpdateServer(_player.Coords.toJSON()),
+                PlayerType.Client => () => UpdateClient(_player.Coords.toJSON())
+            };
 
-            if (_player.Type == PlayerType.Client) UpdateClient(_player.Coords.toJSON());
-            if (_player.Type == PlayerType.Server) UpdateServer(_player.Coords.toJSON());
+            await _player.HandleMovements(_stream, gridFunc);
         }
 
         public void UpdateClient(string payload) => Grid.Update(PlayerType.Client, payload);

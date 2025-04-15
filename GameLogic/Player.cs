@@ -29,7 +29,7 @@ namespace MonsterMaze.GameLogic
             return (GetAsyncKeyState((int)key) & 0x8000) != 0;
         }
 
-        public async Task HandleMovements(NetworkStream stream)
+        public async Task HandleMovements(NetworkStream stream, Action gridFunc)
         {
             bool keydown = false;
 
@@ -75,6 +75,7 @@ namespace MonsterMaze.GameLogic
 
             if (keydown)
             {
+                gridFunc();
                 await TransmitMovements(stream);
             }
 
