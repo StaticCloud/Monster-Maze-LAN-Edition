@@ -1,4 +1,6 @@
-﻿namespace MonsterMaze.GameLogic
+﻿using MonsterMaze.Utils;
+
+namespace MonsterMaze.GameLogic
 {
     internal class Player
     {
@@ -15,11 +17,6 @@
             Coords = new Coords(1, 1);
             Directions = [Direction.N, Direction.E, Direction.S, Direction.W];
             DirectionIndex = 0;
-        }
-
-        public enum Direction 
-        {
-            N, S, E, W
         }
 
         public Direction GetDirection() => Directions[DirectionIndex];

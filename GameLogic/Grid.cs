@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.Json;
-using System.Threading.Tasks;
+﻿using System.Text.Json;
 using Spectre.Console;
+using MonsterMaze.Utils;
 
 namespace MonsterMaze.GameLogic
 {
@@ -42,6 +38,9 @@ namespace MonsterMaze.GameLogic
                 "#######################",
             };
 
+            ClientCoords = new Coords(1, 1);
+            ServerCoords = new Coords(1, 1);
+
             DrawMap();
         }
 
@@ -73,6 +72,8 @@ namespace MonsterMaze.GameLogic
 
         public void Update(PlayerType player, string payload)
         {
+            AnsiConsole.Clear();
+
             Coords coords = JsonSerializer.Deserialize<Coords>(payload);
 
             if (player == PlayerType.Server)
@@ -87,10 +88,5 @@ namespace MonsterMaze.GameLogic
 
             DrawMap();
         }
-    }
-
-    enum PlayerType
-    {
-        Server, Client
     }
 }

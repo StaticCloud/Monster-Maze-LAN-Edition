@@ -1,7 +1,7 @@
 ﻿using System.Net.Sockets;
 using System.Runtime.InteropServices;
 using System.Text;
-using static MonsterMaze.GameLogic.Player;
+using MonsterMaze.Utils;
 
 namespace MonsterMaze.GameLogic
 {
