@@ -10,15 +10,15 @@ namespace MonsterMaze.GameLogic
 {
     internal class Grid
     {
-        private Canvas _canvas;
-        private Coords _clientCoords;
-        private Coords _serverCoords;
-        private string[] _map;
+        public Canvas Canvas { get; init; }
+        public Coords ClientCoords { get; private set; }
+        public Coords ServerCoords { get; private set; }
+        public string[] Map { get; init; }
 
         public Grid() 
         {
-            _canvas = new Canvas(23, 23);
-            _map = new[] {
+            Canvas = new Canvas(23, 23);
+            Map = new[] {
                 "#######################",
                 "#_____________________#",
                 "#_##_##_###_###_##_##_#",
@@ -49,11 +49,11 @@ namespace MonsterMaze.GameLogic
         {
             AnsiConsole.Clear();
 
-            for (int i = 0; i < _map.Length; i++)
+            for (int i = 0; i < Map.Length; i++)
             {
-                for (int j = 0; j < _map[i].Length; j++) 
+                for (int j = 0; j < Map[i].Length; j++) 
                 {
-                    char tile = _map[i][j];
+                    char tile = Map[i][j];
 
                     Color color = tile switch
                     {
@@ -61,14 +61,14 @@ namespace MonsterMaze.GameLogic
                         '_' => Color.Black
                     };
 
-                    _canvas.SetPixel(j, i, color);
+                    Canvas.SetPixel(j, i, color);
                 }
             }
 
-            _canvas.SetPixel(_serverCoords.X, _serverCoords.Y, Color.Aqua);
-            _canvas.SetPixel(_clientCoords.X, _clientCoords.Y, Color.Red);
+            Canvas.SetPixel(ServerCoords.X, ServerCoords.Y, Color.Aqua);
+            Canvas.SetPixel(ClientCoords.X, ClientCoords.Y, Color.Red);
 
-            AnsiConsole.Write(_canvas);
+            AnsiConsole.Write(Canvas);
         }
 
         public void Update(PlayerType player, string payload)
@@ -77,12 +77,12 @@ namespace MonsterMaze.GameLogic
 
             if (player == PlayerType.Server)
             {
-                _serverCoords = coords;
+                ServerCoords = coords;
             }
             
             if (player == PlayerType.Client)
             {
-                _clientCoords = coords;
+                ClientCoords = coords;
             }
 
             DrawMap();

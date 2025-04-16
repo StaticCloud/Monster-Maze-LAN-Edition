@@ -54,7 +54,7 @@ namespace MonsterMaze.Connection
                 int recieved = await stream.ReadAsync(buffer, 0, buffer.Length);
 
                 string payload = Encoding.UTF8.GetString(buffer, 0, recieved);
-                _game.UpdateServer(payload);
+                _game.Grid.Update(PlayerType.Server, payload);
             }
         }
     }
