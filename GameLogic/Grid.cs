@@ -11,9 +11,14 @@ namespace MonsterMaze.GameLogic
         public Coords ServerCoords { get; private set; }
         public string[] Map { get; init; }
 
+        public int Width { get; init; }
+        public int Height { get; init; }
+
         public Grid() 
         {
-            Canvas = new Canvas(23, 23);
+            Width = 23;
+            Height = 23;
+            Canvas = new Canvas(Width, Height);
             Map = new[] {
                 "#######################",
                 "#_____________________#",
@@ -87,6 +92,63 @@ namespace MonsterMaze.GameLogic
             }
 
             DrawMap();
+        }
+
+        public char[][] GetView(Player player)
+        {
+            int distance = 4;
+
+            Direction direction = player.GetDirection();
+
+            // Gauge the correct distance to render
+            if (direction.Equals(Direction.S) || direction.Equals(Direction.N))
+            {
+                if (player.Coords.Y - distance < 0)
+                {
+                    distance = player.Coords.Y;
+                } 
+                else if (player.Coords.Y + distance > Map.Length)
+                {
+                    distance = Map.Length - player.Coords.Y;
+                }
+            } 
+            else if (direction.Equals(Direction.E) || direction.Equals(Direction.W))
+            {
+                if (player.Coords.X - distance < 0)
+                {
+                    distance = player.Coords.X;
+                }
+                else if (player.Coords.Y + distance > Map[player.Coords.Y].Length)
+                {
+                    distance = Map[player.Coords.Y].Length - player.Coords.Y;
+                }
+            }
+
+            return [['k']];
+        }
+
+        public bool SpaceIsFree(Player player)
+        {
+            bool isFree = false;
+
+            if (player.GetDirection() == Direction.S)
+            {
+                isFree = Map[player.Coords.Y + 1][player.Coords.X] != '#';
+            }
+            else if (player.GetDirection() == Direction.N)
+            {
+                isFree = Map[player.Coords.Y - 1][player.Coords.X] != '#';
+            }
+            else if (player.GetDirection() == Direction.E) 
+            {
+                isFree = Map[player.Coords.Y][player.Coords.X + 1] != '#';
+            }
+            else if (player.GetDirection() == Direction.W)
+            {
+                isFree = Map[player.Coords.Y][player.Coords.X - 1] != '#';
+            }
+
+            return isFree;
         }
     }
 }

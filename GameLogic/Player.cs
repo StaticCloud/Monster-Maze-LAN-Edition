@@ -16,7 +16,7 @@ namespace MonsterMaze.GameLogic
             Type = type;
             Coords = new Coords(1, 1);
             Directions = [Direction.N, Direction.E, Direction.S, Direction.W];
-            DirectionIndex = 0;
+            DirectionIndex = 2;
         }
 
         public Direction GetDirection() => Directions[DirectionIndex];
