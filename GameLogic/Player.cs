@@ -4,12 +4,14 @@ namespace MonsterMaze.GameLogic
 {
     internal class Player
     {
-        public Direction[] Directions { get; }
+        public Direction[] Directions { private get; init; }
 
-        public int DirectionIndex { get; set; }
+        public int DirectionIndex { get; private set; }
 
         public Coords Coords { get; set; }
         public PlayerType Type { get; init; }
+
+        public Direction Direction { get => Directions[DirectionIndex]; }
 
         public Player(PlayerType type)
         {
@@ -18,7 +20,15 @@ namespace MonsterMaze.GameLogic
             Directions = [Direction.N, Direction.E, Direction.S, Direction.W];
             DirectionIndex = 2;
         }
+    
+        public void TurnLeft()
+        {
+            DirectionIndex = (DirectionIndex + 3) % 4;
+        }
 
-        public Direction GetDirection() => Directions[DirectionIndex];
+        public void TurnRight()
+        {
+            DirectionIndex = (DirectionIndex + 1) % 4;
+        }
     }
 }

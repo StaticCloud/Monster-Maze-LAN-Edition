@@ -43,21 +43,21 @@ namespace MonsterMaze.GameLogic
                 {
                     if (Grid.SpaceIsFree(Player))
                     {
-                        if (Player.GetDirection().Equals(Direction.N))
+                        if (Player.Direction.Equals(Direction.N))
                         {
                             Player.Coords = new Coords(Player.Coords.X, Player.Coords.Y - 1);
                         }
-                        else if (Player.GetDirection().Equals(Direction.E))
+                        else if (Player.Direction.Equals(Direction.E))
                         {
-                            Player.Coords = new Coords(Player.Coords.X - 1, Player.Coords.Y);
+                            Player.Coords = new Coords(Player.Coords.X + 1, Player.Coords.Y);
                         }
-                        else if (Player.GetDirection().Equals(Direction.S))
+                        else if (Player.Direction.Equals(Direction.S))
                         {
                             Player.Coords = new Coords(Player.Coords.X, Player.Coords.Y + 1);
                         }
-                        else if (Player.GetDirection().Equals(Direction.W))
+                        else if (Player.Direction.Equals(Direction.W))
                         {
-                            Player.Coords = new Coords(Player.Coords.X + 1, Player.Coords.Y);
+                            Player.Coords = new Coords(Player.Coords.X - 1, Player.Coords.Y);
                         }
 
                         keydown = true;
@@ -71,13 +71,12 @@ namespace MonsterMaze.GameLogic
             }
             else if (KeyDown(ConsoleKey.LeftArrow))
             {
-                Player.DirectionIndex = (Player.DirectionIndex + 1) % Player.Directions.Length;
+                Player.TurnLeft();
                 keydown = true;
             }
             else if (KeyDown(ConsoleKey.RightArrow))
             {
-                if (Player.DirectionIndex == 0) Player.DirectionIndex = 3;
-                else Player.DirectionIndex = (Player.DirectionIndex - 1) % Player.Directions.Length;
+                Player.TurnRight();
                 keydown = true;
             }
 

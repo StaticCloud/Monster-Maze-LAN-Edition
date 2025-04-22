@@ -98,7 +98,7 @@ namespace MonsterMaze.GameLogic
         {
             int distance = 4;
 
-            Direction direction = player.GetDirection();
+            Direction direction = player.Direction;
 
             // Gauge the correct distance to render
             if (direction.Equals(Direction.S) || direction.Equals(Direction.N))
@@ -129,26 +129,13 @@ namespace MonsterMaze.GameLogic
 
         public bool SpaceIsFree(Player player)
         {
-            bool isFree = false;
-
-            if (player.GetDirection() == Direction.S)
+            return player.Direction switch
             {
-                isFree = Map[player.Coords.Y + 1][player.Coords.X] != '#';
-            }
-            else if (player.GetDirection() == Direction.N)
-            {
-                isFree = Map[player.Coords.Y - 1][player.Coords.X] != '#';
-            }
-            else if (player.GetDirection() == Direction.E) 
-            {
-                isFree = Map[player.Coords.Y][player.Coords.X + 1] != '#';
-            }
-            else if (player.GetDirection() == Direction.W)
-            {
-                isFree = Map[player.Coords.Y][player.Coords.X - 1] != '#';
-            }
-
-            return isFree;
+                Direction.S => Map[player.Coords.Y + 1][player.Coords.X] != '#',
+                Direction.N => Map[player.Coords.Y - 1][player.Coords.X] != '#',
+                Direction.E => Map[player.Coords.Y][player.Coords.X + 1] != '#',
+                Direction.W => Map[player.Coords.Y][player.Coords.X - 1] != '#'
+            };
         }
     }
 }
