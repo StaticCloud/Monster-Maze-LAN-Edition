@@ -43,22 +43,13 @@ namespace MonsterMaze.GameLogic
                 {
                     if (Grid.SpaceIsFree(Player))
                     {
-                        if (Player.Direction.Equals(Direction.N))
+                        Player.Coords = Player.Direction switch
                         {
-                            Player.Coords = new Coords(Player.Coords.X, Player.Coords.Y - 1);
-                        }
-                        else if (Player.Direction.Equals(Direction.E))
-                        {
-                            Player.Coords = new Coords(Player.Coords.X + 1, Player.Coords.Y);
-                        }
-                        else if (Player.Direction.Equals(Direction.S))
-                        {
-                            Player.Coords = new Coords(Player.Coords.X, Player.Coords.Y + 1);
-                        }
-                        else if (Player.Direction.Equals(Direction.W))
-                        {
-                            Player.Coords = new Coords(Player.Coords.X - 1, Player.Coords.Y);
-                        }
+                            Direction.N => new Coords(Player.Coords.X, Player.Coords.Y - 1),
+                            Direction.E => new Coords(Player.Coords.X + 1, Player.Coords.Y),
+                            Direction.S => new Coords(Player.Coords.X, Player.Coords.Y + 1),
+                            Direction.W => new Coords(Player.Coords.X - 1, Player.Coords.Y);
+                        };
 
                         keydown = true;
                     }
