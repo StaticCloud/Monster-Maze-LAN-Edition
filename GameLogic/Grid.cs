@@ -100,29 +100,24 @@ namespace MonsterMaze.GameLogic
 
             Direction direction = player.Direction;
 
-            // Gauge the correct distance to render
-            if (direction.Equals(Direction.S) || direction.Equals(Direction.N))
+            if (direction == Direction.N)
             {
-                if (player.Coords.Y - distance < 0)
-                {
-                    distance = player.Coords.Y;
-                } 
-                else if (player.Coords.Y + distance > Map.Length)
-                {
-                    distance = Map.Length - player.Coords.Y;
-                }
-            } 
-            else if (direction.Equals(Direction.E) || direction.Equals(Direction.W))
-            {
-                if (player.Coords.X - distance < 0)
-                {
-                    distance = player.Coords.X;
-                }
-                else if (player.Coords.Y + distance > Map[player.Coords.Y].Length)
-                {
-                    distance = Map[player.Coords.Y].Length - player.Coords.Y;
-                }
+                distance = player.Coords.Y - distance < 0 ? player.Coords.Y : distance;
             }
+            else if (direction == Direction.S) 
+            {
+                distance = player.Coords.Y + distance > Map.Length - 1 ? Map.Length - 1 - player.Coords.Y : distance;
+            }
+            else if (direction == Direction.E)
+            {
+                distance = player.Coords.X + distance > Map[player.Coords.Y].Length - 1 ? Map[player.Coords.Y].Length - 1 - player.Coords.X : distance;
+            }
+            else if (direction == Direction.W)
+            {
+                distance = player.Coords.X - distance < 0 ? player.Coords.X : distance;
+            }
+
+            Console.WriteLine(distance);
 
             return [['k']];
         }

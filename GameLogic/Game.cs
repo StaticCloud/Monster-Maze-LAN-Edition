@@ -48,7 +48,7 @@ namespace MonsterMaze.GameLogic
                             Direction.N => new Coords(Player.Coords.X, Player.Coords.Y - 1),
                             Direction.E => new Coords(Player.Coords.X + 1, Player.Coords.Y),
                             Direction.S => new Coords(Player.Coords.X, Player.Coords.Y + 1),
-                            Direction.W => new Coords(Player.Coords.X - 1, Player.Coords.Y);
+                            Direction.W => new Coords(Player.Coords.X - 1, Player.Coords.Y)
                         };
 
                         keydown = true;
