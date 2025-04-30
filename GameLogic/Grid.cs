@@ -94,7 +94,7 @@ namespace MonsterMaze.GameLogic
             //DrawMap();
         }
 
-        public char[,] GetView(Player player)
+        public void GetView(Player player)
         {
             int distance = 4;
 
@@ -156,7 +156,25 @@ namespace MonsterMaze.GameLogic
                 }
             }
 
-            return grid;
+            // Super experimental
+            Console.Clear();
+
+            try
+            {
+                for (int i = 0; i < distance; i++)
+                {
+                    for (int j = 0; j < 3; j++)
+                    {
+                        Console.Write(grid[i, j]);
+                    }
+                    Console.WriteLine();
+                }
+            } 
+            catch (IndexOutOfRangeException ex)
+            {
+                Console.WriteLine(ex);
+            }
+            
         }
 
         public bool SpaceIsFree(Player player)
