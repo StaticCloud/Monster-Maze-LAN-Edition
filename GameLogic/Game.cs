@@ -74,7 +74,7 @@ namespace MonsterMaze.GameLogic
             if (keydown)
             {
                 Grid.Update(Player.Type, Player.Coords.toJSON());
-                Grid.GetView(Player);
+                Console.WriteLine(Grid.GetView(Player));
                 
                 await TransmitMovements(Stream);
             }

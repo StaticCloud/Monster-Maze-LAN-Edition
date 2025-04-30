@@ -46,7 +46,7 @@ namespace MonsterMaze.GameLogic
             ClientCoords = new Coords(1, 1);
             ServerCoords = new Coords(1, 1);
 
-            DrawMap();
+            //DrawMap();
         }
 
         public void DrawMap()
@@ -75,26 +75,26 @@ namespace MonsterMaze.GameLogic
             AnsiConsole.Write(Canvas);
         }
 
-        public void Update(PlayerType player, string payload)
+        public void Update(PlayerType playerType, string payload)
         {
             AnsiConsole.Clear();
 
             Coords coords = JsonSerializer.Deserialize<Coords>(payload);
 
-            if (player == PlayerType.Server)
+            if (playerType == PlayerType.Server)
             {
                 ServerCoords = coords;
             }
             
-            if (player == PlayerType.Client)
+            if (playerType == PlayerType.Client)
             {
                 ClientCoords = coords;
             }
 
-            DrawMap();
+            //DrawMap();
         }
 
-        public char[][] GetView(Player player)
+        public char[,] GetView(Player player)
         {
             int distance = 4;
 
@@ -117,9 +117,46 @@ namespace MonsterMaze.GameLogic
                 distance = player.Coords.X - distance < 0 ? player.Coords.X : distance;
             }
 
-            Console.WriteLine(distance);
+            char[,] grid = new char[distance, 3];
 
-            return [['k']];
+            if (direction == Direction.N)
+            {
+                for (int i = 0; i < distance; i++)
+                {
+                    grid[i, 0] = Map[player.Coords.Y - 1 - i][player.Coords.X + 1];
+                    grid[i, 1] = Map[player.Coords.Y - 1 - i][player.Coords.X];
+                    grid[i, 2] = Map[player.Coords.Y - 1 - i][player.Coords.X - 1];
+                }
+            }
+            else if (direction == Direction.S)
+            {
+                for (int i = 0; i < distance; i++)
+                {
+                    grid[i, 0] = Map[player.Coords.Y + 1 + i][player.Coords.X - 1];
+                    grid[i, 1] = Map[player.Coords.Y + 1 + i][player.Coords.X];
+                    grid[i, 2] = Map[player.Coords.Y + 1 + i][player.Coords.X + 1];
+                }
+            }
+            else if (direction == Direction.E)
+            {
+                for (int i = 0; i < distance; i++)
+                {
+                    grid[i, 0] = Map[player.Coords.Y + 1][player.Coords.X + 1 + i];
+                    grid[i, 1] = Map[player.Coords.Y][player.Coords.X + 1 + i];
+                    grid[i, 2] = Map[player.Coords.Y - 1][player.Coords.X + 1 + i];
+                }
+            }
+            else if (direction == Direction.W)
+            {
+                for (int i = 0; i < distance; i++)
+                {
+                    grid[i, 0] = Map[player.Coords.Y - 1][player.Coords.X - 1 - i];
+                    grid[i, 1] = Map[player.Coords.Y][player.Coords.X - 1 - i];
+                    grid[i, 2] = Map[player.Coords.Y + 1][player.Coords.X - 1 - i];
+                }
+            }
+
+            return grid;
         }
 
         public bool SpaceIsFree(Player player)

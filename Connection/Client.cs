@@ -56,6 +56,7 @@ namespace MonsterMaze.Connection
 
                 string payload = Encoding.UTF8.GetString(buffer, 0, recieved);
                 Game.Grid.Update(PlayerType.Server, payload);
+                Game.Grid.GetView(Player);
             }
         }
     }

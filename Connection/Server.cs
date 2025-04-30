@@ -54,13 +54,14 @@ namespace MonsterMaze.Connection
 
         private async Task Listen(NetworkStream stream)
         {
-            while (true) 
+            while (true)
             {
                 byte[] buffer = new byte[4096];
                 int recieved = await stream.ReadAsync(buffer, 0, buffer.Length);
 
                 string payload = Encoding.UTF8.GetString(buffer, 0, recieved);
                 Game.Grid.Update(PlayerType.Client, payload);
+                Game.Grid.GetView(Player);
             }
         }
     }
