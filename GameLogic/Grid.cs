@@ -10,6 +10,7 @@ namespace MonsterMaze.GameLogic
         public Coords ClientCoords { get; private set; }
         public Coords ServerCoords { get; private set; }
         public string[] Map { get; init; }
+        public string[] View {  get; private set; }
 
         public int Width { get; init; }
         public int Height { get; init; }
@@ -41,6 +42,31 @@ namespace MonsterMaze.GameLogic
                 "#_##_##_###_###_##_##_#",
                 "#_____________________#",
                 "#######################",
+            };
+
+            View = new[]
+            {
+                "_______________________",
+                "_______________________",
+                "_______________________",
+                "_______________________",
+                "_______________________",
+                "_______________________",
+                "_______________________",
+                "_______________________",
+                "_______________________",
+                "_______________________",
+                "_______________________",
+                "_______________________",
+                "_______________________",
+                "_______________________",
+                "_______________________",
+                "_______________________",
+                "_______________________",
+                "_______________________",
+                "_______________________",
+                "_______________________",
+                "_______________________",
             };
 
             ClientCoords = new Coords(1, 1);
@@ -161,13 +187,12 @@ namespace MonsterMaze.GameLogic
 
             try
             {
-                for (int i = 0; i < distance; i++)
+                for (int row = distance; row > 0; row--)
                 {
-                    for (int j = 0; j < 3; j++)
+                    for (int col = 0; col < 3; col++)
                     {
-                        Console.Write(grid[i, j]);
+                        DrawView(row, col, grid);
                     }
-                    Console.WriteLine();
                 }
             } 
             catch (IndexOutOfRangeException ex)
@@ -175,6 +200,85 @@ namespace MonsterMaze.GameLogic
                 Console.WriteLine(ex);
             }
             
+        }
+
+        private void DrawView(int row, int col, char[,] grid)
+        {
+            if (row == 3)
+            {
+                if (grid[row, col] == '_')
+                {
+                    if (col == 0)
+                    {
+                        for (int i = 10; i < 13; i++)
+                        {
+                            Canvas.SetPixel(12, i, Color.Black);
+                        }
+
+                        for (int i = 9; i < 14; i++)
+                        {
+                            Canvas.SetPixel(13, i, Color.Black);
+                        }
+                    }
+
+                    if (col == 1)
+                    {
+                        for (int i = 10; i < 13; i++)
+                        {
+                            Canvas.SetPixel(11, i, Color.Black);
+                        }
+                    }
+
+                    if (col == 2)
+                    {
+                        for (int i = 10; i < 13; i++)
+                        {
+                            Canvas.SetPixel(10, i, Color.Black);
+                        }
+
+                        for (int i = 9; i < 14; i++)
+                        {
+                            Canvas.SetPixel(9, i, Color.Black);
+                        }
+                    }
+                } 
+                else if (grid[row, col] == '#')
+                {
+                    if (col == 0)
+                    {
+                        for (int i = 10; i < 13; i++)
+                        {
+                            Canvas.SetPixel(12, i, Color.White);
+                        }
+
+                        for (int i = 9; i < 14; i++)
+                        {
+                            Canvas.SetPixel(13, i, Color.White);
+                        }
+                    }
+
+                    if (col == 1)
+                    {
+                        for (int i = 10; i < 13; i++)
+                        {
+                            Canvas.SetPixel(11, i, Color.White);
+                        }
+                    }
+
+                    if (col == 2)
+                    {
+                        for (int i = 10; i < 13; i++)
+                        {
+                            Canvas.SetPixel(10, i, Color.White);
+                        }
+
+                        for (int i = 9; i < 14; i++)
+                        {
+                            Canvas.SetPixel(9, i, Color.White);
+                        }
+                    }
+                }
+            }
         }
 
         public bool SpaceIsFree(Player player)
