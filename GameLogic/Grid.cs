@@ -208,77 +208,163 @@ namespace MonsterMaze.GameLogic
             {
                 if (grid[row, col] == '_')
                 {
-                    if (col == 0)
-                    {
-                        for (int i = 10; i < 13; i++)
-                        {
-                            Canvas.SetPixel(12, i, Color.Black);
-                        }
-
-                        for (int i = 9; i < 14; i++)
-                        {
-                            Canvas.SetPixel(13, i, Color.Black);
-                        }
-                    }
-
-                    if (col == 1)
-                    {
-                        for (int i = 10; i < 13; i++)
-                        {
-                            Canvas.SetPixel(11, i, Color.Black);
-                        }
-                    }
-
                     if (col == 2)
                     {
-                        for (int i = 10; i < 13; i++)
-                        {
-                            Canvas.SetPixel(10, i, Color.Black);
-                        }
-
-                        for (int i = 9; i < 14; i++)
-                        {
-                            Canvas.SetPixel(9, i, Color.Black);
-                        }
+                        DrawWall(9, 10, 3, 2, Wall.None);
                     }
-                } 
-                else if (grid[row, col] == '#')
+                    else if (col == 1)
+                    {
+                        DrawWall(11, 10, 3, 1, Wall.None);
+                    }
+                    else if (col == 0)
+                    {
+                        DrawWall(13, 10, 3, 2, Wall.None);
+                    }
+                }
+                else
                 {
-                    if (col == 0)
-                    {
-                        for (int i = 10; i < 13; i++)
-                        {
-                            Canvas.SetPixel(12, i, Color.White);
-                        }
-
-                        for (int i = 9; i < 14; i++)
-                        {
-                            Canvas.SetPixel(13, i, Color.White);
-                        }
-                    }
-
-                    if (col == 1)
-                    {
-                        for (int i = 10; i < 13; i++)
-                        {
-                            Canvas.SetPixel(11, i, Color.White);
-                        }
-                    }
-
                     if (col == 2)
                     {
-                        for (int i = 10; i < 13; i++)
-                        {
-                            Canvas.SetPixel(10, i, Color.White);
-                        }
-
-                        for (int i = 9; i < 14; i++)
-                        {
-                            Canvas.SetPixel(9, i, Color.White);
-                        }
+                        DrawWall(9, 9, 5, 2, Wall.Left);
+                    }
+                    else if (col == 1)
+                    {
+                        DrawWall(11, 10, 3, 1, Wall.None);
+                    }
+                    else if (col == 0)
+                    {
+                        DrawWall(13, 9, 5, 2, Wall.Right);
                     }
                 }
             }
+
+            if (row == 2)
+            {
+                if (grid[row, col] == '_')
+                {
+                    if (col == 2)
+                    {
+                        DrawWall(6, 8, 7, 3, Wall.None);
+                    }
+                    else if (col == 0)
+                    {
+                        DrawWall(14, 8, 7, 3, Wall.None);
+                    }
+                }
+                else
+                {
+                    if (col == 2)
+                    {
+                        DrawWall(6, 6, 11, 3, Wall.Left);
+                    }
+                    else if (col == 1)
+                    {
+                        DrawWall(7, 6, 11, 11, Wall.None);
+                    }
+                    else if (col == 0)
+                    {
+                        DrawWall(16, 6, 11, 3, Wall.Right);
+                    }
+                }
+            }
+
+            if (row == 1)
+            {
+                if (grid[row, col] == '_')
+                {
+                    if (col == 2)
+                    {
+                        DrawWall(3, 5, 9, 3, Wall.None);
+                    }
+                    else if (col == 0)
+                    {
+                        DrawWall(17, 5, 9, 3, Wall.None);
+                    }
+                }
+                else
+                {
+                    if (col == 2)
+                    {
+                        DrawWall(3, 3, 17, 3, Wall.Left);
+                    }
+                    else if (col == 1)
+                    {
+                        DrawWall(7, 6, 11, 11, Wall.None);
+                    }
+                    else if (col == 0)
+                    {
+                        DrawWall(16, 6, 17, 3, Wall.Right);
+                    }
+                }
+            }
+
+            if (row == 0)
+            {
+                if (grid[row, col] == '_')
+                {
+                    if (col == 2)
+                    {
+                        DrawWall(0, 2, 19, 3, Wall.None);
+                    }
+                    else if (col == 0)
+                    {
+                        DrawWall(22, 2, 19, 3, Wall.None);
+                    }
+                }
+                else
+                {
+                    if (col == 2)
+                    {
+                        DrawWall(0, 0, 23, 3, Wall.Left);
+                    }
+                    else if (col == 1)
+                    {
+                        DrawWall(0, 0, 23, 23, Wall.None);
+                    }
+                    else if (col == 0)
+                    {
+                        DrawWall(0, 23, 23, 3, Wall.Right);
+                    }
+                }
+            }
+        }
+
+        private void DrawWall(int x, int y, int height, int range, Wall wall)
+        {
+            if (wall != Wall.None)
+            {
+                for (int i = 0; i <= range; i++)
+                {
+                    for (int j = 0; j <= height - (i * 2); j++)
+                    {
+                        if (wall == Wall.Left)
+                        {
+                            Canvas.SetPixel(x + i, y + j, Color.White);
+                        }
+                        else if (wall == Wall.Right) 
+                        {
+                            Canvas.SetPixel(x - i, y + j, Color.White);
+                        }
+                    }
+                }
+            } 
+            else
+            {
+                for (int i = 0; i <= range; i++)
+                {
+                    for (int j = 0; j <= height; j++)
+                    {
+                        Canvas.SetPixel(x, y, Color.DarkSlateGray1);
+                    }
+                }
+            }
+        }
+        
+        private enum Wall
+        {
+            Right,
+            Left,
+            None
         }
 
         public bool SpaceIsFree(Player player)
