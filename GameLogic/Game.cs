@@ -10,14 +10,12 @@ namespace MonsterMaze.GameLogic
         public NetworkStream Stream { get; init; }
         public Player Player { get; init; }
         public Grid Grid { get; init; }
-        public Camera Camera { get; init; }
 
         public Game(NetworkStream stream, Player player)
         {
             Stream = stream;
             Player = player;
             Grid = new Grid();
-            Camera = new Camera();
         }
 
         public async Task Run()

@@ -75,32 +75,6 @@ namespace MonsterMaze.GameLogic
             //DrawMap();
         }
 
-        public void DrawMap()
-        {
-            AnsiConsole.Clear();
-
-            for (int i = 0; i < Map.Length; i++)
-            {
-                for (int j = 0; j < Map[i].Length; j++) 
-                {
-                    char tile = Map[i][j];
-
-                    Color color = tile switch
-                    {
-                        '#' => Color.White,
-                        '_' => Color.Black
-                    };
-
-                    Canvas.SetPixel(j, i, color);
-                }
-            }
-
-            Canvas.SetPixel(ServerCoords.X, ServerCoords.Y, Color.Aqua);
-            Canvas.SetPixel(ClientCoords.X, ClientCoords.Y, Color.Red);
-
-            AnsiConsole.Write(Canvas);
-        }
-
         public void Update(PlayerType playerType, string payload)
         {
             AnsiConsole.Clear();
@@ -117,7 +91,6 @@ namespace MonsterMaze.GameLogic
                 ClientCoords = coords;
             }
 
-            //DrawMap();
         }
 
         public void GetView(Player player)
@@ -182,12 +155,12 @@ namespace MonsterMaze.GameLogic
                 }
             }
 
-            // Super experimental
-            Console.Clear();
+            AnsiConsole.Clear();
+            ClearView();
 
             try
             {
-                for (int row = distance; row > 0; row--)
+                for (int row = distance; row >= 0; row--)
                 {
                     for (int col = 0; col < 3; col++)
                     {
@@ -199,11 +172,24 @@ namespace MonsterMaze.GameLogic
             {
                 Console.WriteLine(ex);
             }
-            
+
+            AnsiConsole.Write(Canvas);
+        }
+
+        private void ClearView()
+        {
+            for (int i = 0; i < Width; i++)
+            {
+                for (int j = 0; j < Height; j++)
+                {
+                    Canvas.SetPixel(i, j, Color.Black);
+                }
+            }
         }
 
         private void DrawView(int row, int col, char[,] grid)
         {
+
             if (row == 3)
             {
                 if (grid[row, col] == '_')
@@ -212,16 +198,12 @@ namespace MonsterMaze.GameLogic
                     {
                         DrawWall(9, 10, 3, 2, Wall.None);
                     }
-                    else if (col == 1)
-                    {
-                        DrawWall(11, 10, 3, 1, Wall.None);
-                    }
                     else if (col == 0)
                     {
-                        DrawWall(13, 10, 3, 2, Wall.None);
+                        DrawWall(12, 10, 3, 2, Wall.None);
                     }
                 }
-                else
+                else if (grid[row, col] == '#')
                 {
                     if (col == 2)
                     {
@@ -229,7 +211,7 @@ namespace MonsterMaze.GameLogic
                     }
                     else if (col == 1)
                     {
-                        DrawWall(11, 10, 3, 1, Wall.None);
+                        DrawWall(9, 9, 5, 5, Wall.None);
                     }
                     else if (col == 0)
                     {
@@ -237,9 +219,9 @@ namespace MonsterMaze.GameLogic
                     }
                 }
             }
-
             if (row == 2)
             {
+                Console.WriteLine(col);
                 if (grid[row, col] == '_')
                 {
                     if (col == 2)
@@ -251,7 +233,7 @@ namespace MonsterMaze.GameLogic
                         DrawWall(14, 8, 7, 3, Wall.None);
                     }
                 }
-                else
+                else if (grid[row, col] == '#')
                 {
                     if (col == 2)
                     {
@@ -267,21 +249,20 @@ namespace MonsterMaze.GameLogic
                     }
                 }
             }
-
             if (row == 1)
             {
                 if (grid[row, col] == '_')
                 {
                     if (col == 2)
                     {
-                        DrawWall(3, 5, 9, 3, Wall.None);
+                        DrawWall(3, 5, 13, 3, Wall.None);
                     }
                     else if (col == 0)
                     {
-                        DrawWall(17, 5, 9, 3, Wall.None);
+                        DrawWall(17, 5, 13, 3, Wall.None);
                     }
                 }
-                else
+                else if (grid[row, col] == '#')
                 {
                     if (col == 2)
                     {
@@ -293,37 +274,36 @@ namespace MonsterMaze.GameLogic
                     }
                     else if (col == 0)
                     {
-                        DrawWall(16, 6, 17, 3, Wall.Right);
+                        DrawWall(19, 3, 17, 3, Wall.Right);
                     }
                 }
             }
-
             if (row == 0)
             {
                 if (grid[row, col] == '_')
                 {
                     if (col == 2)
                     {
-                        DrawWall(0, 2, 19, 3, Wall.None);
+                        DrawWall(0, 2, 18, 3, Wall.None);
                     }
                     else if (col == 0)
                     {
-                        DrawWall(22, 2, 19, 3, Wall.None);
+                        DrawWall(22, 2, 18, 3, Wall.None);
                     }
                 }
-                else
+                else if (grid[row, col] == '#')
                 {
                     if (col == 2)
                     {
-                        DrawWall(0, 0, 23, 3, Wall.Left);
+                        DrawWall(0, 0, 22, 3, Wall.Left);
                     }
                     else if (col == 1)
                     {
-                        DrawWall(0, 0, 23, 23, Wall.None);
+                        DrawWall(0, 0, 22, 22, Wall.None);
                     }
                     else if (col == 0)
                     {
-                        DrawWall(0, 23, 23, 3, Wall.Right);
+                        DrawWall(22, 0, 22, 3, Wall.Right);
                     }
                 }
             }
@@ -333,28 +313,28 @@ namespace MonsterMaze.GameLogic
         {
             if (wall != Wall.None)
             {
-                for (int i = 0; i <= range; i++)
+                for (int i = 0; i < range; i++)
                 {
-                    for (int j = 0; j <= height - (i * 2); j++)
+                    for (int j = 0; j < height - (i * 2); j++)
                     {
                         if (wall == Wall.Left)
                         {
-                            Canvas.SetPixel(x + i, y + j, Color.White);
+                            Canvas.SetPixel(x + i, y + j + i, Color.White);
                         }
-                        else if (wall == Wall.Right) 
+                        else if (wall == Wall.Right)
                         {
-                            Canvas.SetPixel(x - i, y + j, Color.White);
+                            Canvas.SetPixel(x - i, y + j + i, Color.White);
                         }
                     }
                 }
             } 
             else
             {
-                for (int i = 0; i <= range; i++)
+                for (int i = 0; i < range; i++)
                 {
-                    for (int j = 0; j <= height; j++)
+                    for (int j = 0; j < height; j++)
                     {
-                        Canvas.SetPixel(x, y, Color.DarkSlateGray1);
+                        Canvas.SetPixel(x + i, y + j, Color.Grey70);
                     }
                 }
             }
