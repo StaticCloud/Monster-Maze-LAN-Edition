@@ -100,28 +100,32 @@ namespace MonsterMaze.GameLogic
             Distance = 4;
 
             Direction direction = player.Direction;
+            char[,] grid = new char[Distance,3];
+
+            //if (direction == Direction.N)
+            //{
+            //    Distance = player.Coords.Y - Distance < 0 ? player.Coords.Y : Distance;
+            //}
+            //else if (direction == Direction.S) 
+            //{
+            //    Distance = player.Coords.Y + Distance > Map.Length - 1 ? Map.Length - 1 - player.Coords.Y : Distance;
+            //}
+            //else if (direction == Direction.E)
+            //{
+            //    Distance = player.Coords.X + Distance > Map[player.Coords.Y].Length - 1 ? Map[player.Coords.Y].Length - 1 - player.Coords.X : Distance;
+            //}
+            //else if (direction == Direction.W)
+            //{
+            //    Distance = player.Coords.X - Distance < 0 ? player.Coords.X : Distance;
+            //}
+
 
             if (direction == Direction.N)
             {
                 Distance = player.Coords.Y - Distance < 0 ? player.Coords.Y : Distance;
-            }
-            else if (direction == Direction.S) 
-            {
-                Distance = player.Coords.Y + Distance > Map.Length - 1 ? Map.Length - 1 - player.Coords.Y : Distance;
-            }
-            else if (direction == Direction.E)
-            {
-                Distance = player.Coords.X + Distance > Map[player.Coords.Y].Length - 1 ? Map[player.Coords.Y].Length - 1 - player.Coords.X : Distance;
-            }
-            else if (direction == Direction.W)
-            {
-                Distance = player.Coords.X - Distance < 0 ? player.Coords.X : Distance;
-            }
 
-            char[,] grid = new char[Distance, 3];
+                grid = new char[Distance, 3];
 
-            if (direction == Direction.N)
-            {
                 for (int i = 0; i < Distance; i++)
                 {
                     grid[i, 0] = Map[player.Coords.Y - i][player.Coords.X + 1];
@@ -131,6 +135,10 @@ namespace MonsterMaze.GameLogic
             }
             else if (direction == Direction.S)
             {
+                Distance = player.Coords.Y + Distance > Map.Length - 1 ? Map.Length - 1 - player.Coords.Y : Distance;
+
+                grid = new char[Distance, 3];
+
                 for (int i = 0; i < Distance; i++)
                 {
                     grid[i, 0] = Map[player.Coords.Y + i][player.Coords.X - 1];
@@ -140,6 +148,10 @@ namespace MonsterMaze.GameLogic
             }
             else if (direction == Direction.E)
             {
+                Distance = player.Coords.X + Distance > Map[player.Coords.Y].Length - 1 ? Map[player.Coords.Y].Length - 1 - player.Coords.X : Distance;
+
+                grid = new char[Distance, 3];
+
                 for (int i = 0; i < Distance; i++)
                 {
                     grid[i, 0] = Map[player.Coords.Y + 1][player.Coords.X + i];
@@ -149,6 +161,10 @@ namespace MonsterMaze.GameLogic
             }
             else if (direction == Direction.W)
             {
+                Distance = player.Coords.X - Distance < 0 ? player.Coords.X : Distance;
+
+                grid = new char[Distance, 3];
+
                 for (int i = 0; i < Distance; i++)
                 {
                     grid[i, 0] = Map[player.Coords.Y - 1][player.Coords.X - i];
@@ -304,7 +320,7 @@ namespace MonsterMaze.GameLogic
                     }
                     else if (col == 0)
                     {
-                        DrawWall(19, 2, 19, 3, Wall.None);
+                        DrawWall(20, 2, 19, 3, Wall.None);
                     }
                 }
                 else if (grid[row, col] == '#')
