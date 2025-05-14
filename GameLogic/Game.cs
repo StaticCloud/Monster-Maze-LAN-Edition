@@ -78,7 +78,7 @@ namespace MonsterMaze.GameLogic
 
             Grid.GetView(Player);
 
-            Thread.Sleep(1000);
+            Thread.Sleep(700);
         }
 
         private async Task TransmitMovements(NetworkStream stream)
