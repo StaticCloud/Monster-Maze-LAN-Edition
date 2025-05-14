@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using Spectre.Console;
 using MonsterMaze.Utils;
+using System.Text;
 
 namespace MonsterMaze.GameLogic
 {
@@ -9,7 +10,7 @@ namespace MonsterMaze.GameLogic
         public Canvas Canvas { get; init; }
         public Coords ClientCoords { get; private set; }
         public Coords ServerCoords { get; private set; }
-        public string[] Map { get; init; }
+        public string[] Map { get; private set; }
         public string[] View {  get; private set; }
 
         public string[][] MonsterSprites { get; init; }
@@ -29,7 +30,7 @@ namespace MonsterMaze.GameLogic
                 "#_____________________#",
                 "#_#_#_#_#_###_#_#_#_#_#",
                 "#_#_#_#_#_____#_#___#_#",
-                "#M__#___###_###___#___#",
+                "#___#___###_###___#___#",
                 "#_#_#_#_#_____#_#_#_#_#",
                 "#_#_#_#_#_###_#_#_#_#_#",
                 "#_____________________#",
@@ -124,6 +125,7 @@ namespace MonsterMaze.GameLogic
                 "_______________________",
                 "_______________________"
             };
+
             MonsterSprites[2] = new string[] {
                 "_______________________",
                 "_______________________",
@@ -151,8 +153,6 @@ namespace MonsterMaze.GameLogic
 
             ClientCoords = new Coords(1, 1);
             ServerCoords = new Coords(1, 1);
-
-            //DrawMap();
         }
 
         public void Update(PlayerType playerType, string payload)
@@ -171,8 +171,50 @@ namespace MonsterMaze.GameLogic
                 ClientCoords = coords;
             }
 
+            RefreshMap();
+
+            UpdateMap(ServerCoords, 'S');
+            UpdateMap(ClientCoords, 'C');
         }
 
+        private void RefreshMap()
+        {
+            Map = new[] {
+                "#######################",
+                "#_____________________#",
+                "#_#_#_#_#_###_#_#_#_#_#",
+                "#_#_#_#_#_____#_#___#_#",
+                "#___#___###_###___#___#",
+                "#_#_#_#_#_____#_#_#_#_#",
+                "#_#_#_#_#_###_#_#_#_#_#",
+                "#_____________________#",
+                "#_##_###_##_##_###_##_#",
+                "#_#___#_________#___#_#",
+                "#___#___#_###_#___#___#",
+                "#_#___#_________#___#_#",
+                "#_##_###_##_##_###_##_#",
+                "#_____________________#",
+                "#_#_#_#_#_###_#_#_#_#_#",
+                "#_#_#_#_#_____#_#___#_#",
+                "#___#___###_###___#___#",
+                "#_#_#_#_#_____#_#_#_#_#",
+                "#_#_#_#_#_###_#_#_#_#_#",
+                "#_____________________#",
+                "#######################",
+            };
+        }
+
+        private void UpdateMap(Coords coords, char character)
+        {
+            string row = Map[coords.Y];
+
+            StringBuilder rowBuilder = new StringBuilder(row);
+
+            rowBuilder[coords.X] = character;
+
+            Map[coords.Y] = rowBuilder.ToString();
+        }
+ 
         public void GetView(Player player)
         {
             Distance = 4;
@@ -190,7 +232,6 @@ namespace MonsterMaze.GameLogic
                         break;
                     }
                 }
-                //Distance = player.Coords.Y - Distance < 0 ? player.Coords.Y : Distance;
 
                 grid = new char[Distance, 3];
 
@@ -212,8 +253,6 @@ namespace MonsterMaze.GameLogic
                     }
                 }
 
-                //Distance = player.Coords.Y + Distance > Map.Length - 1 ? Map.Length - 1 - player.Coords.Y : Distance;
-
                 grid = new char[Distance, 3];
 
                 for (int i = 0; i < Distance; i++)
@@ -234,8 +273,6 @@ namespace MonsterMaze.GameLogic
                     }
                 }
 
-                //Distance = player.Coords.X + Distance > Map[player.Coords.Y].Length - 1 ? Map[player.Coords.Y].Length - 1 - player.Coords.X : Distance;
-
                 grid = new char[Distance, 3];
 
                 for (int i = 0; i < Distance; i++)
@@ -255,8 +292,6 @@ namespace MonsterMaze.GameLogic
                         break;
                     }
                 }
-
-                //Distance = player.Coords.X - Distance < 0 ? player.Coords.X : Distance;
 
                 grid = new char[Distance, 3];
 
@@ -333,7 +368,7 @@ namespace MonsterMaze.GameLogic
 
                 if (col == 2)
                 {
-                    if (grid[row, col - 1] == 'M')
+                    if (grid[row, col] == 'S' || grid[row, col] == 'M')
                     {
                         DrawMonster(MonsterSprites[2]);
                     }
@@ -374,7 +409,7 @@ namespace MonsterMaze.GameLogic
 
                 if (col == 2)
                 {
-                    if (grid[row, col - 1] == 'M')
+                    if (grid[row, col] == 'S' || grid[row, col] == 'M')
                     {
                         DrawMonster(MonsterSprites[1]);
                     }
@@ -415,7 +450,7 @@ namespace MonsterMaze.GameLogic
 
                 if (col == 2)
                 {
-                    if (grid[row, col - 1] == 'M')
+                    if (grid[row, col] == 'S' || grid[row, col] == 'M')
                     {
                         DrawMonster(MonsterSprites[0]);
                     }
