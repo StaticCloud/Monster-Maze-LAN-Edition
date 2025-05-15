@@ -186,7 +186,7 @@ namespace MonsterMaze.GameLogic
                 "#_#_#_#_#_____#_#___#_#",
                 "#___#___###_###___#___#",
                 "#_#_#_#_#_____#_#_#_#_#",
-                "#_#_#_#_#_###_#_#_#_#_#",
+                "#C#_#_#_#_###_#_#_#_#_#",
                 "#_____________________#",
                 "#_##_###_##_##_###_##_#",
                 "#_#___#_________#___#_#",
@@ -321,7 +321,19 @@ namespace MonsterMaze.GameLogic
                 Console.WriteLine(ex);
             }
 
-            AnsiConsole.Write(Canvas);
+            RenderGame();   
+        }
+
+        private void RenderGame()
+        {
+            Table GameView = new Table();
+            GameView.Alignment(Justify.Center);
+            GameView.BorderColor(Color.Red);
+            GameView.AddColumn("");
+            GameView.AddColumn("Client PL");
+            GameView.AddColumn("Server PL");
+            GameView.AddRow(Canvas).Centered();
+            AnsiConsole.Write(GameView);
         }
 
         private void ClearView()
@@ -368,7 +380,7 @@ namespace MonsterMaze.GameLogic
 
                 if (col == 2)
                 {
-                    if (grid[row, col] == 'S' || grid[row, col] == 'M')
+                    if (grid[row, col - 1] == 'S' || grid[row, col - 1] == 'C')
                     {
                         DrawMonster(MonsterSprites[2]);
                     }
@@ -409,11 +421,12 @@ namespace MonsterMaze.GameLogic
 
                 if (col == 2)
                 {
-                    if (grid[row, col] == 'S' || grid[row, col] == 'M')
+                    if (grid[row, col - 1] == 'S' || grid[row, col - 1] == 'C')
                     {
                         DrawMonster(MonsterSprites[1]);
                     }
                 }
+                
             }
             if (row == 1)
             {
@@ -450,7 +463,7 @@ namespace MonsterMaze.GameLogic
 
                 if (col == 2)
                 {
-                    if (grid[row, col] == 'S' || grid[row, col] == 'M')
+                    if (grid[row, col - 1] == 'S' || grid[row, col - 1] == 'C')
                     {
                         DrawMonster(MonsterSprites[0]);
                     }
