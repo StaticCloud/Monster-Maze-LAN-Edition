@@ -191,7 +191,7 @@ namespace MonsterMaze.GameLogic
                 "#_##_###_##_##_###_##_#",
                 "#_#___#_________#___#_#",
                 "#___#___#_###_#___#___#",
-                "#_#___#_________#___#_#",
+                "#S#___#_________#___#_#",
                 "#_##_###_##_##_###_##_#",
                 "#_____________________#",
                 "#_#_#_#_#_###_#_#_#_#_#",
@@ -471,7 +471,7 @@ namespace MonsterMaze.GameLogic
             }
             if (row == 0)
             {
-                if (grid[row, col] == '_')
+                if (grid[row, col] == '_' || grid[row, col] == 'C' || grid[row, col] == 'S')
                 {
                     if (col == 2)
                     {
@@ -479,6 +479,7 @@ namespace MonsterMaze.GameLogic
                     }
                     else if (col == 1 && Distance == 1)
                     {
+                        Console.WriteLine(col);
                         DrawWall(3, 2, 19, 17, Wall.None);
                     }
                     else if (col == 0)
