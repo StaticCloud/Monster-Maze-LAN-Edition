@@ -380,9 +380,15 @@ namespace MonsterMaze.GameLogic
 
                 if (col == 2)
                 {
-                    if (grid[row, col - 1] == 'S' || grid[row, col - 1] == 'C')
+                    char type = grid[row, col - 1];
+
+                    if (type == 'S')
                     {
-                        DrawMonster(MonsterSprites[2]);
+                        DrawMonster(MonsterSprites[2], PlayerType.Server);
+                    }
+                    else if (type == 'C')
+                    {
+                        DrawMonster(MonsterSprites[2], PlayerType.Client);
                     }
                 }
             }
@@ -421,9 +427,15 @@ namespace MonsterMaze.GameLogic
 
                 if (col == 2)
                 {
-                    if (grid[row, col - 1] == 'S' || grid[row, col - 1] == 'C')
+                    char type = grid[row, col - 1];
+
+                    if (type == 'S')
                     {
-                        DrawMonster(MonsterSprites[1]);
+                        DrawMonster(MonsterSprites[1], PlayerType.Server);
+                    }
+                    else if (type == 'C')
+                    {
+                        DrawMonster(MonsterSprites[1], PlayerType.Client);
                     }
                 }
                 
@@ -463,9 +475,15 @@ namespace MonsterMaze.GameLogic
 
                 if (col == 2)
                 {
-                    if (grid[row, col - 1] == 'S' || grid[row, col - 1] == 'C')
+                    char type = grid[row, col - 1];
+
+                    if (type == 'S')
                     {
-                        DrawMonster(MonsterSprites[0]);
+                        DrawMonster(MonsterSprites[0], PlayerType.Server);
+                    }
+                    else if (type == 'C') 
+                    {
+                        DrawMonster(MonsterSprites[0], PlayerType.Client);
                     }
                 }
             }
@@ -536,7 +554,7 @@ namespace MonsterMaze.GameLogic
             }
         }
         
-        private void DrawMonster(string[] sprite)
+        private void DrawMonster(string[] sprite, PlayerType type)
         {
             for (int i = 0; i < 22; i++)
             {
@@ -544,7 +562,7 @@ namespace MonsterMaze.GameLogic
                 {
                     if (sprite[j][i] == '#')
                     {
-                        Canvas.SetPixel(i, j, Color.Red);
+                        Canvas.SetPixel(i, j, type == PlayerType.Server ? Color.Red : Color.Blue);
                     }
 
                     if (sprite[j][i] == 'O')
